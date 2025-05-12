@@ -245,7 +245,7 @@ export const DATA = {
       image: "/actinspace.webp",
       links: [
         {
-          type: "Website",
+          title: "Website",
           href: "https://actinspace.org/",
           icon: <Icons.globe className="size-3" />,
         }
@@ -259,7 +259,7 @@ export const DATA = {
       image: "/oceanhackathon.png",
       links: [
         {
-          type: "Website",
+          title: "Website",
           href: "https://www.ocean-hackathon.fr/",
           icon: <Icons.globe className="size-3" />,
         }
@@ -273,7 +273,7 @@ export const DATA = {
       image: "/startupweekend.png",
       links: [
         {
-          type: "Website",
+          title: "Website",
           href: "https://startupweekend.org/",
           icon: <Icons.globe className="size-3" />,
         }
