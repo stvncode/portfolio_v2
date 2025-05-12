@@ -1,15 +1,15 @@
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/components/ui/badge"
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { cn } from "@/lib/utils";
-import Image from "next/image";
-import Link from "next/link";
-import Markdown from "react-markdown";
+} from "@/components/ui/card"
+import { cn } from "@/lib/utils"
+import Image from "next/image"
+import Link from "next/link"
+import Markdown from "react-markdown"
 
 interface Props {
   title: string;
@@ -47,6 +47,7 @@ export function ProjectCard({
       }
     >
       <Link
+      rel="noopener noreferrer" target="_blank"
         href={href || "#"}
         className={cn("block cursor-pointer", className)}
       >
