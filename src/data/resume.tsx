@@ -161,6 +161,32 @@ export const DATA = {
   ],
   projects: [
     {
+      title: "Invador",
+      href: "https://invador.vercel.app/",
+      dates: "2025 - Present",
+      active: true,
+      description:
+      " Building a space invaders game with React and Effect-TS",
+      technologies: [
+        "React",
+        "Vite",
+        "Effect-TS",
+        "Tailwind CSS",
+        "ShadCN UI",
+        "Framer Motion",
+        "Responsive Design",
+      ],
+      links: [
+        {
+          type: "Website",
+          href: "https://invador.vercel.app/",
+          icon: <Icons.globe className="size-3" />,
+        }
+      ],
+      image: "/invador.png",
+      video: "",
+    },
+    {
       title: "Userpact",
       href: "https://userpact.com",
       dates: "2025 - Present",
@@ -234,7 +260,7 @@ export const DATA = {
       ],
       image: "/mathilde.png",
       video: "",
-    }
+    },
   ],
   hackathons: [
     {
