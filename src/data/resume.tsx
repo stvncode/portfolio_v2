@@ -7,8 +7,7 @@ export const DATA = {
   url: "https://steventravers.com",
   location: "Lille, France",
   locationLink: "https://www.google.com/maps/place/Rennes,+France",
-  description:
-    "Fullstack Developer / Designer",
+  description: "Fullstack Developer / Designer",
   summary:
     "Welcome to my portfolio! As a fullstack developer, I am passionate about creating innovative and dynamic solutions. I strive to create visually stunning and intuitive interfaces that enhance the user experience. In addition to my technical skills, I also enjoy creating content and share it for free. Whether it's writing articles, producing videos, or sharing insights from my experiences, I believe in the power of communication to bring people together and drive positive change. So take a look around and see what I've been working on. I hope you'll find something that sparks your interest. And if you have any questions or feedback, please don't hesitate to reach out.",
   avatarUrl: "/me.jpeg",
@@ -65,30 +64,6 @@ export const DATA = {
 
   work: [
     {
-      company: "Meteroid",
-      href: "https://www.meteroid.io/",
-      badges: [],
-      location: "Remote",
-      title: "Freelance Developer",
-      logoUrl: "/meteroid.jpg",
-      start: "2025",
-      end: "Present",
-      description:
-      "Contributing to Meteroid, an open-source billing infrastructure that helps SaaS companies launch, iterate, and scale their billing processes with ease. The platform enables businesses to implement complex billing models while maintaining flexibility for growth and market adaptation.",
-    },
-    {
-      company: "Nudibranches Technologies",
-      href: "https://www.nudibranches.tech/",
-      badges: [],
-      location: "Remote",
-      title: "Freelance Developer",
-      logoUrl: "/nudibranches.png",
-      start: "2025",
-      end: "Present",
-      description:
-      "Contributed to the European Lakehouse project, a cloud experience platform designed for air gap environments. Developed solutions that provide cloud-like capabilities while maintaining the security and isolation required for sensitive or regulated industries.",
-    },
-    {
       company: "Thales",
       href: "https://www.thalesgroup.com/",
       badges: [],
@@ -99,6 +74,40 @@ export const DATA = {
       end: "Present",
       description:
         "Building an internal AI-powered chat system for document analysis that handles both classified and unclassified materials. The solution allows users to view and edit documents, ask questions, and analyze specific sections. The system is designed to maintain security protocols while providing advanced analysis capabilities.",
+    },
+    {
+      company: "Meteroid",
+      href: "https://www.meteroid.io/",
+      badges: [],
+      location: "Remote",
+      title: "Freelance Developer",
+      logoUrl: "/meteroid.jpg",
+      start: "2025",
+      description:
+        "Contributing to Meteroid, an open-source billing infrastructure that helps SaaS companies launch, iterate, and scale their billing processes with ease. The platform enables businesses to implement complex billing models while maintaining flexibility for growth and market adaptation.",
+    },
+    {
+      company: "Nudibranches Technologies",
+      href: "https://www.nudibranches.tech/",
+      badges: [],
+      location: "Remote",
+      title: "Freelance Developer",
+      logoUrl: "/nudibranches.png",
+      start: "2025",
+      description:
+        "Contributed to the European Lakehouse project, a cloud experience platform designed for air gap environments. Developed solutions that provide cloud-like capabilities while maintaining the security and isolation required for sensitive or regulated industries.",
+    },
+    {
+      company: "Userpact",
+      href: "https://www.userpact.com/",
+      badges: [],
+      location: "Remote",
+      title: "Founder",
+      logoUrl: "/userpact.svg",
+      start: "2024",
+      end: "2025",
+      description:
+        "Building a feedback application for on-premise technology. Userpact enables businesses to collect, manage, and respond to user feedback effectively. Built with modern technologies to ensure performance, scalability, and an excellent user experience.",
     },
     {
       company: "Conduktor",
@@ -161,12 +170,62 @@ export const DATA = {
   ],
   projects: [
     {
-      title: "Invador",
-      href: "https://invador.vercel.app/",
-      dates: "2025 - Present",
+      title: "Pokemon App",
+      href: "https://try-vue-vert.vercel.app/",
+      dates: "2025",
+      active: true,
+      description: " Building a Pokemon App with Vue.js",
+      technologies: [
+        "Vue.js",
+        "TypeScript",
+        "Tailwind CSS",
+        "ShadCN UI",
+        "Pinia",
+        "Tanstack Query",
+      ],
+      links: [
+        {
+          type: "Website",
+          href: "https://try-vue-vert.vercel.app/",
+          icon: <Icons.globe className="size-3" />,
+        },
+      ],
+      image: "/pokemon.png",
+      video: "",
+    },
+    {
+      title: "Userpact",
+      href: "https://userpact.com",
+      dates: "2024 - 2025",
       active: true,
       description:
-      " Building a space invaders game with React and Effect-TS",
+        "Co-creating an innovative feedback application for on-premise technology. Userpact enables businesses to collect, manage, and respond to user feedback effectively. Built with modern technologies to ensure performance, scalability, and an excellent user experience.",
+      technologies: [
+        "React",
+        "Vite",
+        "TypeScript",
+        "ShadCN UI",
+        "Tailwind CSS",
+        "PostgreSQL",
+        "Drizzle",
+        "Elysia",
+      ],
+      links: [
+        {
+          type: "Website",
+          href: "https://userpact.com",
+          icon: <Icons.globe className="size-3" />,
+        },
+      ],
+      image: "/userpact.png",
+      video: "",
+    },
+    {
+      title: "Invador",
+      href: "https://invador.vercel.app/",
+      dates: "2025",
+      active: true,
+      description: " Building a space invaders game with React and Effect-TS",
       technologies: [
         "React",
         "Vite",
@@ -181,60 +240,44 @@ export const DATA = {
           type: "Website",
           href: "https://invador.vercel.app/",
           icon: <Icons.globe className="size-3" />,
-        }
+        },
       ],
       image: "/invador.png",
       video: "",
     },
     {
-      title: "Userpact",
-      href: "https://userpact.com",
-      dates: "2025 - Present",
-      active: true,
-      description:
-        "Co-creating an innovative feedback application for on-premise technology. Userpact enables businesses to collect, manage, and respond to user feedback effectively. Built with modern technologies to ensure performance, scalability, and an excellent user experience.",
-      technologies: [
-        "React",
-        "Vite",
-        "TypeScript",
-        "ShadCN UI",
-        "Tailwind CSS",
-        "PostgreSQL",
-        "Drizzle",
-        "Elysia"
-      ],
-      links: [
-        {
-          type: "Website",
-          href: "https://userpact.com",
-          icon: <Icons.globe className="size-3" />,
-        }
-      ],
-      image: "/userpact.png",
-      video: "",
-    },
-    {
       title: "Alice Le Guennec",
       href: "https://alice-leguennec.vercel.app/",
-      dates: "2025 - Present",
+      dates: "2025",
       active: true,
       description:
         "Designed and developed a professional website for Alice Le Guennec, an osteopath and yoga teacher. The site showcases her services, philosophy, and appointment scheduling capabilities. Built with Astro for optimal performance and ShadCN UI for a clean, modern aesthetic that reflects her professional practice.",
-      technologies: [
-        "Astro",
-        "TypeScript",
-        "ShadCN UI",
-        "Tailwind CSS",
-        "Responsive Design"
-      ],
+      technologies: ["Astro", "TypeScript", "ShadCN UI", "Tailwind CSS", "Responsive Design"],
       links: [
         {
           type: "Website",
           href: "https://alice-leguennec.vercel.app/",
           icon: <Icons.globe className="size-3" />,
-        }
+        },
       ],
       image: "/alice.png",
+      video: "",
+    },
+    {
+      title: "Thales Learning Platform",
+      href: "https://learning-thales.vercel.app/",
+      dates: "2024",
+      active: true,
+      description: " Building a learning platform for react and typescript for Thales",
+      technologies: ["React", "TypeScript", "Tailwind CSS", "ShadCN UI", "Framer Motion"],
+      links: [
+        {
+          type: "Website",
+          href: "https://learning-thales.vercel.app/",
+          icon: <Icons.globe className="size-3" />,
+        },
+      ],
+      image: "/exercice.png",
       video: "",
     },
     {
@@ -244,19 +287,13 @@ export const DATA = {
       active: true,
       description:
         "Created a digital haven for psychology professionals, delivering a fully deployed website with empathetic design and robust technology. Every aspect was meticulously curated to ensure an intuitive and serene user experience, seamlessly marrying functionality with aesthetics.",
-      technologies: [
-        "React",
-        "Next.js",
-        "TypeScript",
-        "Mantine",
-        "Framer Motion"
-      ],
+      technologies: ["React", "Next.js", "TypeScript", "Mantine", "Framer Motion"],
       links: [
         {
           type: "Website",
           href: "https://mathildebauden.vercel.app/",
           icon: <Icons.globe className="size-3" />,
-        }
+        },
       ],
       image: "/mathilde.png",
       video: "",
@@ -265,7 +302,8 @@ export const DATA = {
   hackathons: [
     {
       title: "ActInSpace",
-      description: "Participated in this international hackathon focused on space technologies and applications. Developed innovative solutions using space data and technologies to address real-world challenges.",
+      description:
+        "Participated in this international hackathon focused on space technologies and applications. Developed innovative solutions using space data and technologies to address real-world challenges.",
       location: "Brest, France",
       dates: "May 2018",
       image: "/actinspace.webp",
@@ -274,12 +312,13 @@ export const DATA = {
           title: "Website",
           href: "https://actinspace.org/",
           icon: <Icons.globe className="size-3" />,
-        }
+        },
       ],
     },
     {
       title: "Ocean Hackathon",
-      description: "Worked on a project to develop technological solutions for ocean conservation and sustainable maritime activities. Used data visualization and IoT sensors to monitor marine environments.",
+      description:
+        "Worked on a project to develop technological solutions for ocean conservation and sustainable maritime activities. Used data visualization and IoT sensors to monitor marine environments.",
       location: "Brest, France",
       dates: "October 2017",
       image: "/oceanhackathon.png",
@@ -288,12 +327,13 @@ export const DATA = {
           title: "Website",
           href: "https://www.ocean-hackathon.fr/",
           icon: <Icons.globe className="size-3" />,
-        }
+        },
       ],
     },
     {
       title: "Startup Weekend Brest",
-      description: "Participated in this 54-hour event where I collaborated with a team to develop a business idea from concept to prototype. Focused on designing and developing the technical aspects of a smart home energy conservation solution.",
+      description:
+        "Participated in this 54-hour event where I collaborated with a team to develop a business idea from concept to prototype. Focused on designing and developing the technical aspects of a smart home energy conservation solution.",
       location: "Brest, France",
       dates: "March 2016",
       image: "/startupweekend.png",
@@ -302,16 +342,17 @@ export const DATA = {
           title: "Website",
           href: "https://startupweekend.org/",
           icon: <Icons.globe className="size-3" />,
-        }
+        },
       ],
     },
     {
       title: "Hackathon ISEN IoT",
-      description: "Internal hackathon at ISEN focused on Internet of Things applications. Developed a connected device prototype for smart agriculture, measuring soil conditions and automating irrigation systems.",
+      description:
+        "Internal hackathon at ISEN focused on Internet of Things applications. Developed a connected device prototype for smart agriculture, measuring soil conditions and automating irrigation systems.",
       location: "Brest, France",
       dates: "November 2015",
       image: "/isen-hackathon.png",
       links: [],
     },
   ],
-} as const;
+} as const
