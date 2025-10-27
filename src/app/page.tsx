@@ -64,7 +64,7 @@ export default function Page() {
                 subtitle={work.title}
                 href={work.href}
                 badges={work.badges}
-                period={`${work.start} ${work.end ? ` - ${work.end ?? "Present"}` : ""}`}
+                period={`${work.start}${"end" in work && work.end ? ` - ${work.end}` : ""}`}
                 description={work.description}
               />
             </BlurFade>

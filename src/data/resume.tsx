@@ -12,7 +12,7 @@ export const DATA = {
     "Welcome to my portfolio! As a fullstack developer, I am passionate about creating innovative and dynamic solutions. I strive to create visually stunning and intuitive interfaces that enhance the user experience. In addition to my technical skills, I also enjoy creating content and share it for free. Whether it's writing articles, producing videos, or sharing insights from my experiences, I believe in the power of communication to bring people together and drive positive change. So take a look around and see what I've been working on. I hope you'll find something that sparks your interest. And if you have any questions or feedback, please don't hesitate to reach out.",
   avatarUrl: "/me.jpeg",
   skills: [
-    "React",
+    "React/Vue/Lit",
     "TypeScript",
     "Vite/Next.js",
     "Rest/GraphQL",
@@ -64,6 +64,18 @@ export const DATA = {
 
   work: [
     {
+      company: "Home Assistant - Open Home Foundation",
+      href: "https://www.home-assistant.io/",
+      badges: [],
+      location: "Remote",
+      title: "Software Engineer",
+      logoUrl: "/ha.jpg",
+      start: "2025",
+      end: "Present",
+      description:
+        "Building interfaces for all the Ecosystem projects of the Open Home Foundation (Music Assistant, Zigbee, Matter, Toolbox etc).",
+    },
+    {
       company: "Thales",
       href: "https://www.thalesgroup.com/",
       badges: [],
@@ -71,7 +83,7 @@ export const DATA = {
       title: "Freelance Developer",
       logoUrl: "/thales.png",
       start: "2024",
-      end: "Present",
+      end: "2025",
       description:
         "Building an internal AI-powered chat system for document analysis that handles both classified and unclassified materials. The solution allows users to view and edit documents, ask questions, and analyze specific sections. The system is designed to maintain security protocols while providing advanced analysis capabilities.",
     },
