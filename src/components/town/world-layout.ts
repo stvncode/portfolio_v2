@@ -129,6 +129,9 @@ export const OBSTACLES: Rect[] = [
   { x: 21, z: -1.6, w: 9, d: 0.8 },
   { x: 0, z: 1, w: 1.8, d: 1.8 },
   { x: 20, z: 19, w: 1.6, d: 1.4 },
+  // The duck pond and the vegetable garden.
+  { x: 7.5, z: -5.5, w: 5.4, d: 4.2 },
+  { x: -19, z: 13.6, w: 5.2, d: 4.6 },
   // Hedges inside the walkable area.
   { x: -15, z: 9.2, w: 12, d: 0.9 },
   { x: -15, z: 13, w: 0.9, d: 7.6 },

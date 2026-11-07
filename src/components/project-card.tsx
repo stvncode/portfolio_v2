@@ -40,6 +40,8 @@ export function ProjectCard({
   links,
   className,
 }: Props) {
+  // Pages on this site, like the village, open in the same tab.
+  const external = href?.startsWith("http") ?? false;
   return (
     <Card
       className={
@@ -47,7 +49,8 @@ export function ProjectCard({
       }
     >
       <Link
-      rel="noopener noreferrer" target="_blank"
+        rel={external ? "noopener noreferrer" : undefined}
+        target={external ? "_blank" : undefined}
         href={href || "#"}
         className={cn("block cursor-pointer", className)}
       >
@@ -102,7 +105,7 @@ export function ProjectCard({
         {links && links.length > 0 && (
           <div className="flex flex-row flex-wrap items-start gap-1">
             {links?.map((link, idx) => (
-              <Link href={link?.href} key={idx} target="_blank">
+              <Link href={link?.href} key={idx} target={link.href.startsWith("http") ? "_blank" : undefined}>
                 <Badge key={idx} className="flex gap-2 px-2 py-1 text-[10px]">
                   {link.icon}
                   {link.type}

@@ -20,7 +20,11 @@ export interface TownPlace {
   entrance: [number, number];
   paragraphs: string[];
   list?: TownList;
+  /** A closing line under the list. */
+  outro?: string;
   links?: TownLink[];
+  /** You can step inside this one. */
+  enterable?: boolean;
 }
 
 export const TOWN_AREAS: Record<TownArea, string> = {
@@ -34,66 +38,62 @@ export const TOWN_PLACES: TownPlace[] = [
   {
     id: "longere",
     name: "La Longère",
-    bubble: "Home: a long stone farmhouse in Val d'Izé. Mind the cats.",
+    bubble: "Home, or almost. Come in, and mind the cats.",
     area: "home",
     entrance: [-6, 18.6],
+    enterable: true,
     paragraphs: [
-      "This is home, or it will be very soon: a longère, the long and narrow stone farmhouse you find all over the Breton countryside. Ours is in Val d'Izé, a village near Rennes.",
-      "We're moving in soon, so for now it's mostly boxes. The inside gets done properly once we're settled.",
+      "This is the house we're about to move into: an old stone longère in Val d'Izé, a small village near Rennes. Long, narrow, calm, and already full of plans.",
+      "But a house is really about who's inside. Mathilde, Malo, Plume and Ponyo are waiting in there. Step in and say hi.",
     ],
-    list: {
-      title: "Who lives here",
-      items: [
-        "Mathilde, my wife",
-        "Malo, our son",
-        "Plume, the black cat",
-        "Ponyo, the Maine Coon (so beautiful)",
-      ],
-    },
   },
   {
     id: "penty",
     name: "The Penty",
-    bubble: "The little stone outbuilding where the PC lives.",
+    bubble: "The little stone cottage where I play video games.",
     area: "home",
     entrance: [7, 18.4],
+    enterable: true,
     paragraphs: [
-      "Next to the house there's a penty, the Breton word for a small stone cottage. This one is the gaming room.",
-      "That's where League of Legends happens.",
+      "Next to most longères you'll find a penty, a tiny stone cottage. Ours is where I play video games: a chair, a screen, and the promise of just one more game.",
     ],
   },
   {
     id: "pitch",
     name: "The Pitch",
-    bubble: "Football, but the players are rocket-powered cars.",
+    bubble: "Football, but with rocket cars. Yes, really.",
     area: "home",
     entrance: [-3, 26],
     paragraphs: [
-      "Rocket League: football played with rocket-powered cars. It's one of my games, so it gets a field behind the house.",
+      "Rocket League is football played with rocket-powered cars. It makes no sense on paper, and it's one of the most joyful games I know.",
+      "There's always room for one more car on the pitch.",
     ],
   },
   {
     id: "petit-bar",
     name: "Le Petit Bar",
-    bubble: "Place des Lices, Rennes. Where I met Mathilde.",
+    bubble: "Place des Lices, Rennes. Where my story with Mathilde began.",
     area: "rennes",
     entrance: [-22, -3.2],
+    enterable: true,
     paragraphs: [
-      "I love going to bars, and this one matters more than any other. Le Petit Bar, on Place des Lices in Rennes, is where I met Mathilde, 8 years ago.",
-      "In this town it also has a dartboard on the wall, because I love darts.",
+      "Eight years ago, in this little bar on Place des Lices, I met Mathilde. Everything good that came after started that evening.",
+      "I still love a good bar, less for the noise than for the people, the conversations that run a bit too late, and a game of darts if anyone's up for it.",
     ],
   },
   {
     id: "kiosk",
     name: "The Kiosk",
-    bubble: "Anime and manga. Frieren is number one.",
+    bubble: "Stories I keep coming back to.",
     area: "rennes",
     entrance: [-13.4, 1.6],
-    paragraphs: ["I watch a lot of anime. Here's the shelf, in order."],
+    paragraphs: [
+      "Anime has a way of catching me off guard: a quiet scene about kindness, a goodbye, a long journey that changes someone. These are the stories that stayed with me.",
+    ],
     list: {
-      title: "My top anime",
+      title: "On the shelf",
       items: [
-        "Frieren: Beyond Journey's End (number one, by far)",
+        "Frieren: Beyond Journey's End",
         "Hunter x Hunter",
         "Solo Leveling",
         "Wistoria: Wand and Sword",
@@ -101,19 +101,19 @@ export const TOWN_PLACES: TownPlace[] = [
         "Death Note",
       ],
     },
+    outro: "Got one I should watch next? I'm all ears.",
   },
   {
     id: "cinema",
     name: "Open-Air Cinema",
-    bubble: "A screen in a field. I've watched a lot of movies.",
+    bubble: "Films under the stars. Bring a blanket.",
     area: "countryside",
     entrance: [19, 4.5],
     paragraphs: [
-      "I've watched a lot of movies, and a screen in a field felt right for the countryside.",
-      "Visit every place in town and the evening show starts.",
+      "Some films stay with you long after the credits. These six did, each in its own way: they're about people trying, failing, and caring for each other anyway.",
     ],
     list: {
-      title: "Six I love",
+      title: "Tonight's programme",
       items: [
         "Good Will Hunting",
         "What's Eating Gilbert Grape",
@@ -123,68 +123,66 @@ export const TOWN_PLACES: TownPlace[] = [
         "Captain Fantastic",
       ],
     },
+    outro: "Visit every place in the village and the evening show will start.",
   },
   {
     id: "glade",
     name: "Brocéliande Glade",
-    bubble: "A sword in a stone, a chest in the grass. Zelda first, always.",
+    bubble: "A sword in a stone, a chest in the grass.",
     area: "countryside",
     entrance: [19, 20.5],
     paragraphs: [
-      "Before Rocket League and League of Legends, there was Zelda. I'm a big, big Zelda fan.",
-      "Brittany has its own legendary forest, Brocéliande, not far from Rennes. A sword in a stone in a quiet glade felt like the right way to bring the two together.",
+      "Long before any other game, there was Zelda. It's where I learned to love exploring: the quiet, the curiosity, the feeling that something good is waiting over the next hill.",
+      "Brittany has its own legendary forest, Brocéliande, not far from here. It felt like the right home for a sword in a stone.",
     ],
   },
   {
     id: "home-assistant",
     name: "Home Assistant",
-    bubble: "The Open Home Foundation, where my days go.",
+    bubble: "My work, and a community I'm proud to be part of.",
     area: "ohf",
     entrance: [-1, -15.6],
     paragraphs: [
-      "I'm a software engineer at the Open Home Foundation, building interfaces for its projects.",
-      "Home Assistant is the big one: open-source home automation that puts local control and privacy first.",
+      "I work at the Open Home Foundation, building interfaces for its open-source projects. Home Assistant is the heart of it: a smart home that runs locally, respects your privacy and belongs to you.",
+      "What I love most is the community: so many people building it together, and being kind to each other while they do.",
     ],
     links: [
       { label: "Home Assistant", href: "https://www.home-assistant.io" },
-      {
-        label: "Open Home Foundation",
-        href: "https://www.openhomefoundation.org",
-      },
+      { label: "Open Home Foundation", href: "https://www.openhomefoundation.org" },
     ],
   },
   {
     id: "music-assistant",
     name: "Music Assistant Records",
-    bubble: "Every music source, every speaker, one library.",
+    bubble: "All your music, every speaker, one place.",
     area: "ohf",
     entrance: [8, -15.2],
     paragraphs: [
-      "Music Assistant brings your streaming services and your own files into one library, and plays them on any speaker in the house.",
-      "I work on its frontend, so this shop is close to my heart.",
+      "Music Assistant brings your streaming services and your own collection together, and plays them on any speaker at home.",
+      "I work on how it looks and feels, and I try to make every screen a little more welcoming than the last.",
     ],
     links: [{ label: "Music Assistant", href: "https://www.music-assistant.io" }],
   },
   {
     id: "esphome",
     name: "ESPHome Workshop",
-    bubble: "Solder, flash, blink. I love electronics.",
+    bubble: "Where little boards learn to talk to your home.",
     area: "ohf",
     entrance: [15.5, -14.6],
     paragraphs: [
-      "I love electronics: boards, sensors, LEDs, and the moment something you built blinks for the first time.",
-      "ESPHome turns a tiny microcontroller into a smart-home device from a few lines of YAML, which makes this the right workshop for it.",
+      "I've always loved electronics: a few wires, a tiny board, and suddenly something you made blinks back at you.",
+      "ESPHome makes that magic easy, turning a small microcontroller into a smart-home device with a few lines of configuration.",
     ],
     links: [{ label: "ESPHome", href: "https://esphome.io" }],
   },
   {
     id: "device-database",
     name: "Device Database",
-    bubble: "Every device, labelled and on the shelf.",
+    bubble: "Every device, carefully labelled.",
     area: "ohf",
     entrance: [-10, -15.4],
     paragraphs: [
-      "The Device Database is the Open Home Foundation's catalogue of smart-home devices. Another project I build the interface for.",
+      "Choosing smart-home devices shouldn't feel like a gamble. The Device Database is a shared catalogue of devices, built so the next person can choose with confidence. I help build its interface.",
     ],
   },
 ];

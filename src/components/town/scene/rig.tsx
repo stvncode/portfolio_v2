@@ -7,10 +7,8 @@ import { applyNightGlow } from "../kit/materials";
 import { useTown } from "../town-context";
 
 export const CAMERA_OFFSET = new THREE.Vector3(30, 30, 30);
-/** World units visible from top to bottom at the default zoom. */
-const VISIBLE_HEIGHT = 22;
-/** On narrow screens, keep at least this many units across. */
-const VISIBLE_WIDTH = 18;
+/** On narrow screens, keep at least this share of the visible height across. */
+const MIN_WIDTH_SHARE = 0.82;
 const MIN_ZOOM = 0.4;
 const MAX_ZOOM = 2.2;
 const WHEEL_STEP = 0.1;
@@ -31,6 +29,7 @@ export function CameraRig() {
   const { camera, size, gl } = useThree();
   const focus = useRef(new THREE.Vector3(town.player.current.x, 0, town.player.current.z));
   const zoom = useRef(1);
+  const areaId = useRef(town.area.id);
 
   useEffect(() => {
     const element = gl.domElement;
@@ -53,10 +52,17 @@ export function CameraRig() {
     } else if (town.panelOpen) {
       look.addScaledVector(SCREEN_DOWN, (size.height * SHEET_SHARE) / 2 / ortho.zoom);
     }
-    focus.current.lerp(look, 1 - Math.exp(-FOLLOW * Math.min(delta, 0.1)));
+    if (areaId.current !== town.area.id) {
+      // Walked through a door: cut, don't pan across the map.
+      areaId.current = town.area.id;
+      focus.current.copy(look);
+    } else {
+      focus.current.lerp(look, 1 - Math.exp(-FOLLOW * Math.min(delta, 0.1)));
+    }
     camera.position.copy(focus.current).add(CAMERA_OFFSET);
     camera.lookAt(focus.current);
-    const base = Math.min(size.height / VISIBLE_HEIGHT, size.width / VISIBLE_WIDTH);
+    const visible = town.area.visibleHeight;
+    const base = Math.min(size.height / visible, size.width / (visible * MIN_WIDTH_SHARE));
     const wantedZoom = base * zoom.current;
     if (Math.abs(ortho.zoom - wantedZoom) > 0.01) {
       ortho.zoom += (wantedZoom - ortho.zoom) * Math.min(1, delta * 8);

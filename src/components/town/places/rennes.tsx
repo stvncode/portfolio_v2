@@ -8,7 +8,7 @@ import { TimberHouse } from "../kit/timber-house";
 const BAR_GREEN = "#24533f";
 const GOLD = "#e7c76a";
 
-function Dartboard() {
+export function Dartboard() {
   const rings = [
     { radius: 0.34, color: "#1d1d1d" },
     { radius: 0.3, color: "#c23b2f" },

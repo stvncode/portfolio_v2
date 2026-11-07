@@ -71,6 +71,13 @@ export const glow = {
   }),
 };
 
+/** Indoor lamps: always on. */
+export const litBulb = new THREE.MeshStandardMaterial({
+  color: "#fff6df",
+  emissive: "#ffcf7a",
+  emissiveIntensity: 1.6,
+});
+
 /** 0 is full day, 1 is full night. */
 export function applyNightGlow(t: number) {
   glow.window.color.lerpColors(WINDOW_DAY, WINDOW_NIGHT, t);

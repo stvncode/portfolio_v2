@@ -183,6 +183,30 @@ export const DATA = {
   ],
   projects: [
     {
+      title: "My Little Village",
+      href: "/town",
+      dates: "2026",
+      active: true,
+      description:
+        "A small 3D Breton village you can walk around, made of the people and things I love. Step into our house, say hi to the cats, and stay for the evening film.",
+      technologies: [
+        "React Three Fiber",
+        "Three.js",
+        "Next.js",
+        "TypeScript",
+        "Tailwind CSS",
+      ],
+      links: [
+        {
+          type: "Visit the village",
+          href: "/town",
+          icon: <Icons.globe className="size-3" />,
+        },
+      ],
+      image: "/town.jpg",
+      video: "",
+    },
+    {
       title: "Pokemon App",
       href: "https://try-vue-vert.vercel.app/",
       dates: "2025",

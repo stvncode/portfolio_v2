@@ -3,16 +3,14 @@
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import type * as THREE from "three";
-import { TOWN_PLACES } from "@/data/town";
 import { angleDelta, screenToWorld, slide } from "@/lib/town/movement";
 import { Figure, type FigureMotion, STEVEN } from "../kit/figure";
 import { useTown } from "../town-context";
-import { OBSTACLES, PLAYER_RADIUS, WALK_BOUNDS } from "../world-layout";
+import type { Area } from "../areas";
+import { PLAYER_RADIUS } from "../world-layout";
 
 const SPEED = 6.5;
 const ARRIVE_DISTANCE = 0.15;
-/** Close enough to a place's entrance to count as standing at it. */
-const NEAR_DISTANCE = 2.6;
 const TURN_RATE = 12;
 const STRIDE = 2.4;
 const MAX_FRAME = 0.05;
@@ -26,13 +24,13 @@ function held(keys: Set<string>, names: string[]) {
   return names.some((name) => keys.has(name)) ? 1 : 0;
 }
 
-function nearestPlace(x: number, z: number): string | null {
+function nearestSpot(area: Area, x: number, z: number): string | null {
   let best: string | null = null;
-  let bestDistance = NEAR_DISTANCE;
-  for (const place of TOWN_PLACES) {
-    const distance = Math.hypot(place.entrance[0] - x, place.entrance[1] - z);
+  let bestDistance = area.nearDistance;
+  for (const spot of area.spots) {
+    const distance = Math.hypot(spot.x - x, spot.z - z);
     if (distance < bestDistance) {
-      best = place.id;
+      best = spot.id;
       bestDistance = distance;
     }
   }
@@ -84,15 +82,15 @@ export function Player() {
         direction.x * stepLength,
         direction.z * stepLength,
         PLAYER_RADIUS,
-        OBSTACLES,
-        WALK_BOUNDS,
+        town.area.obstacles,
+        town.area.bounds,
       );
       const travelled = Math.hypot(next.x - player.x, next.z - player.z);
       if (travelled < 0.0001 && town.target.current) {
         // Blocked: give up, but still open the place if we got close enough.
         const target = town.target.current;
         town.target.current = null;
-        if (target.placeId && nearestPlace(player.x, player.z) === target.placeId) {
+        if (target.placeId && nearestSpot(town.area, player.x, player.z) === target.placeId) {
           town.arrive(target.placeId);
         }
       }
@@ -109,7 +107,7 @@ export function Player() {
       group.current.rotation.y = player.heading;
     }
 
-    const near = nearestPlace(player.x, player.z);
+    const near = nearestSpot(town.area, player.x, player.z);
     if (near !== nearby.current) {
       nearby.current = near;
       town.setNearby(near);

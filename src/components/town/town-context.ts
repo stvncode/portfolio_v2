@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, type MutableRefObject, useContext } from "react";
+import type { Area } from "./areas";
 
 export interface PlayerState {
   x: number;
@@ -26,9 +27,14 @@ export interface TownControls {
   showtime: boolean;
   /** A place's panel covers part of the screen. */
   panelOpen: boolean;
+  /** Where you are: the village, or inside a building. */
+  area: Area;
   walkTo: (x: number, z: number) => void;
-  walkToPlace: (id: string) => void;
+  /** Walk to a spot in the current area: a place outside, a hotspot inside. */
+  walkToSpot: (id: string) => void;
+  /** Called by the player when the closest spot changes. */
   setNearby: (id: string | null) => void;
+  /** Called by the player on reaching the spot it was walking to. */
   arrive: (id: string) => void;
 }
 

@@ -2,7 +2,7 @@
 
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
-import type * as THREE from "three";
+import * as THREE from "three";
 import { useTown } from "../town-context";
 import { glow } from "./materials";
 import { Block, Box, Cylinder, type Vec3 } from "./shapes";
@@ -10,6 +10,7 @@ import { Block, Box, Cylinder, type Vec3 } from "./shapes";
 const POST = "#2c3238";
 const LIGHT_INTENSITY = 14;
 const LIGHT_DISTANCE = 9;
+const HALO_OPACITY = 0.13;
 
 interface LampProps {
   position: Vec3;
@@ -21,9 +22,12 @@ interface LampProps {
 export function Lamp({ position, lit = false }: LampProps) {
   const town = useTown();
   const light = useRef<THREE.PointLight>(null);
+  const halo = useRef<THREE.MeshBasicMaterial>(null);
 
   useFrame(() => {
-    if (light.current) light.current.intensity = town.nightLevel.current * LIGHT_INTENSITY;
+    const night = town.nightLevel.current;
+    if (light.current) light.current.intensity = night * LIGHT_INTENSITY;
+    if (halo.current) halo.current.opacity = night * HALO_OPACITY;
   });
 
   return (
@@ -35,6 +39,10 @@ export function Lamp({ position, lit = false }: LampProps) {
       <mesh position={[0, 3.62, 0]} castShadow>
         <coneGeometry args={[0.3, 0.26, 4]} />
         <meshStandardMaterial color={POST} flatShading />
+      </mesh>
+      <mesh position={[0, 3.3, 0]}>
+        <sphereGeometry args={[0.6, 12, 8]} />
+        <meshBasicMaterial ref={halo} color="#ffcf7a" transparent opacity={0} depthWrite={false} blending={THREE.AdditiveBlending} />
       </mesh>
       {lit && <pointLight ref={light} position={[0, 3.1, 0]} intensity={0} distance={LIGHT_DISTANCE} decay={1.6} color="#ffc778" />}
     </group>
