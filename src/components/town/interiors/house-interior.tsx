@@ -12,6 +12,10 @@ import { HOUSE_LAYOUT as LAYOUT } from "./layouts";
 import { Doorway, Room } from "./room";
 
 const PLACE = "longere";
+/** Where the family is in the room, so they can look up when you walk over. */
+const MATHILDE_WATCH = { x: 1.2, z: 2.1, facing: Math.PI / 2 };
+const MALO_WATCH = { x: -5.7, z: 2.9, facing: Math.PI / 2 };
+const PONYO_WATCH = { x: -5.5, z: -0.9, facing: -Math.PI / 2 };
 const CABINET = "#ebe6dc";
 const FRIDGE = "#a8d3c0";
 
@@ -173,7 +177,7 @@ export function HouseInterior({ nearbyId }: { nearbyId: string | null }) {
         <Bookcase />
       </group>
       <Frame position={[-1.9, 2.15, -LAYOUT.halfDepth + 0.03]} width={0.8} height={0.6} colors={["#bfe0f0", "#f2d68a", "#8fbf6a", "#6a9a4f"]} />
-      <Cat look={PONYO} position={[-5.5, 0.02, -0.9]} rotation={[0, -Math.PI / 2, 0]} scale={1.8} />
+      <Cat look={PONYO} position={[-5.5, 0.02, -0.9]} rotation={[0, -Math.PI / 2, 0]} scale={1.8} watch={PONYO_WATCH} />
 
       <InteriorSpot {...spot} spotId="cats" position={[-0.6, 0, -LAYOUT.halfDepth + 0.9]} bubbleHeight={2.9}>
         <CatTree />
@@ -186,11 +190,11 @@ export function HouseInterior({ nearbyId }: { nearbyId: string | null }) {
       </InteriorSpot>
       <Pendant position={[2.3, 2.6, 0.6]} color="#e3b75a" />
       <Pendant position={[3.7, 2.6, 0.6]} color="#e3b75a" />
-      <Figure look={MATHILDE} position={[1.2, 0, 2.1]} rotation={[0, -Math.PI / 2, 0]} />
+      <Figure look={MATHILDE} position={[1.2, 0, 2.1]} rotation={[0, Math.PI / 2, 0]} watch={MATHILDE_WATCH} />
 
       <InteriorSpot {...spot} spotId="malo" position={[-5.6, 0, 2.9]} bubbleHeight={2.2}>
         <PlayCorner />
-        <Figure look={MALO} position={[-0.1, 0, 0]} rotation={[0, Math.PI / 2, 0]} scale={0.6} />
+        <Figure look={MALO} position={[-0.1, 0, 0]} rotation={[0, Math.PI / 2, 0]} scale={0.6} watch={MALO_WATCH} />
       </InteriorSpot>
 
       <InteriorSpot {...spot} spotId="boxes" position={[6.6, 0, 2.8]} bubbleHeight={2.2}>

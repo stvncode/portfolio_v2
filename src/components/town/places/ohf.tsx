@@ -3,9 +3,11 @@
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import type * as THREE from "three";
+import { DYNAMIC } from "../kit/batched";
 import { glow, PALETTE } from "../kit/materials";
 import { Block, Box, Cylinder, Door, PitchedRoof } from "../kit/shapes";
 import { Sign } from "../kit/sign";
+import { SolarPanels, WeatherStation } from "./ohf-extras";
 
 const MA_BLUE = "#03a9f4";
 const SHOP_BLACK = "#1f2126";
@@ -49,6 +51,7 @@ export function HomeAssistantHall() {
           font="600 56px ui-monospace, Menlo, monospace"
         />
       </group>
+      <SolarPanels position={[-2.9, 5.78, 1.98]} angle={Math.atan2(2.8, 3.5)} count={3} />
       {[-3.8, 3.8].map((x) => (
         <group key={x} position={[x, 0, 4.2]}>
           <Block size={[1, 0.55, 1]} color="#c9d0d5" />
@@ -73,7 +76,7 @@ function SpinningRecord() {
       {/* Stood on its edge and turned towards the camera, spinning on its own axis. */}
       <group position={[0, 1.65, 0]} rotation={[0, Math.PI / 4, 0]}>
         <group rotation={[Math.PI / 2, 0, 0]}>
-          <group ref={record}>
+          <group ref={record} userData={DYNAMIC}>
             <Cylinder radius={1.25} height={0.08} color="#141417" segments={28} />
             <Cylinder position={[0, 0.05, 0]} radius={0.95} height={0.02} color="#26262b" segments={28} />
             <Cylinder position={[0, 0.07, 0]} radius={0.42} height={0.02} color={MA_BLUE} segments={20} />
@@ -189,7 +192,7 @@ export function EsphomeWorkshop() {
           <BlinkingLeds />
         </group>
       </group>
-      <Cylinder position={[2, 4.2, -1.5]} radius={0.04} height={1.8} color="#5d636b" segments={5} />
+      <WeatherStation position={[1.9, 3.45, 1.2]} />
     </group>
   );
 }

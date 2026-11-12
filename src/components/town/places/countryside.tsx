@@ -92,6 +92,53 @@ function Fireflies() {
   );
 }
 
+const SHAFTS: { x: number; z: number; lean: number; width: number }[] = [
+  { x: -1.4, z: -0.6, lean: 0.32, width: 0.9 },
+  { x: 0.3, z: 0.2, lean: 0.38, width: 1.3 },
+  { x: 1.9, z: -0.9, lean: 0.3, width: 0.7 },
+];
+
+/** Sunbeams slanting through the trees by day, and a slow glint on the sword. */
+function GladeLight() {
+  const town = useTown();
+  const shafts = useRef<THREE.Group>(null);
+  const glint = useRef<THREE.Mesh>(null);
+
+  useFrame(({ clock }) => {
+    const day = 1 - town.nightLevel.current;
+    if (shafts.current) {
+      shafts.current.visible = day > 0.05;
+      shafts.current.children.forEach((shaft, index) => {
+        const material = (shaft as THREE.Mesh).material as THREE.MeshBasicMaterial;
+        material.opacity = day * (0.1 + Math.sin(clock.elapsedTime * 0.6 + index * 2) * 0.035);
+      });
+    }
+    if (glint.current) {
+      // A sparkle that swells and fades every few seconds.
+      const pulse = Math.max(0, Math.sin(clock.elapsedTime * 1.4)) ** 6;
+      glint.current.scale.setScalar(0.05 + pulse * 0.3);
+      glint.current.rotation.z = clock.elapsedTime * 0.8;
+    }
+  });
+
+  return (
+    <>
+      <group ref={shafts}>
+        {SHAFTS.map((shaft) => (
+          <mesh key={shaft.x} position={[shaft.x - 1.2, 3.2, shaft.z]} rotation={[0, Math.PI / 4, shaft.lean]}>
+            <planeGeometry args={[shaft.width, 7]} />
+            <meshBasicMaterial color="#fff3c4" transparent opacity={0.1} depthWrite={false} blending={THREE.AdditiveBlending} side={THREE.DoubleSide} />
+          </mesh>
+        ))}
+      </group>
+      <mesh ref={glint} position={[0.12, 2.15, 0.1]} rotation={[0, Math.PI / 4, 0]}>
+        <octahedronGeometry args={[1, 0]} />
+        <meshBasicMaterial color="#fffbe0" />
+      </mesh>
+    </>
+  );
+}
+
 /** A clearing in Brocéliande, the Breton forest of legends. Centred on the stone. */
 export function BroceliandeGlade() {
   return (
@@ -110,107 +157,7 @@ export function BroceliandeGlade() {
       <Mushroom position={[-1.2, 0, 2.5]} />
       <Mushroom position={[3.4, 0, -1.4]} />
       <Fireflies />
-    </group>
-  );
-}
-
-const TURF = "#6fae4f";
-const TURF_STRIPE = "#79b858";
-const PITCH_LENGTH = 16;
-const PITCH_WIDTH = 10;
-const LINE = 0.12;
-
-function Goal({ side, color }: { side: 1 | -1; color: string }) {
-  const x = side * (PITCH_LENGTH / 2 + 0.6);
-  return (
-    <group position={[x, 0, 0]}>
-      {[-1.6, 1.6].map((z) => (
-        <Block key={z} position={[0, 0, z]} size={[0.14, 1.9, 0.14]} color={color} />
-      ))}
-      <Box position={[0, 1.9, 0]} size={[0.14, 0.14, 3.34]} color={color} />
-      <mesh position={[side * 0.6, 0.95, 0]} rotation={[0, Math.PI / 2, 0]}>
-        <planeGeometry args={[3.2, 1.9]} />
-        <meshStandardMaterial color="#ffffff" transparent opacity={0.35} side={THREE.DoubleSide} />
-      </mesh>
-    </group>
-  );
-}
-
-const ORBIT_X = 4.2;
-const ORBIT_Z = 2.6;
-const CAR_SPEED = 0.55;
-
-function RocketCar() {
-  const car = useRef<THREE.Group>(null);
-  useFrame(({ clock }) => {
-    if (!car.current) return;
-    const t = clock.elapsedTime * CAR_SPEED;
-    car.current.position.set(Math.cos(t) * ORBIT_X, 0, Math.sin(t) * ORBIT_Z);
-    car.current.rotation.y = Math.atan2(-Math.sin(t) * ORBIT_X, Math.cos(t) * ORBIT_Z);
-  });
-  return (
-    <group ref={car}>
-      {/* Modelled along +x; turned so the bonnet points along +z, the way it drives. */}
-      <group rotation={[0, -Math.PI / 2, 0]}>
-        <Block position={[0, 0.25, 0]} size={[1.7, 0.45, 0.95]} color="#2f6fe0" />
-        <Block position={[-0.15, 0.7, 0]} size={[0.8, 0.35, 0.8]} color="#1e2a44" />
-        <Box position={[-0.85, 0.85, 0]} size={[0.12, 0.08, 0.95]} color="#f29b38" />
-        <Box position={[-0.88, 0.45, 0]} size={[0.06, 0.2, 0.3]} material={glow.bulb} />
-        {[
-          [0.55, 0.5],
-          [0.55, -0.5],
-          [-0.55, 0.5],
-          [-0.55, -0.5],
-        ].map(([x, z]) => (
-          <mesh key={`${x}${z}`} position={[x, 0.22, z]} rotation={[Math.PI / 2, 0, 0]} material={solid("#1c1d21")} castShadow>
-            <cylinderGeometry args={[0.24, 0.24, 0.16, 10]} />
-          </mesh>
-        ))}
-      </group>
-    </group>
-  );
-}
-
-function Ball() {
-  const ball = useRef<THREE.Mesh>(null);
-  useFrame(({ clock }) => {
-    if (ball.current) ball.current.position.y = 0.6 + Math.abs(Math.sin(clock.elapsedTime * 1.8)) * 0.5;
-  });
-  return (
-    <mesh ref={ball} position={[0, 0.6, 0]} material={solid("#e6e7e9")} castShadow>
-      <icosahedronGeometry args={[0.6, 1]} />
-    </mesh>
-  );
-}
-
-/** A small car-football pitch behind the house, centred on the kick-off spot. */
-export function Pitch() {
-  return (
-    <group>
-      {Array.from({ length: 8 }, (_, index) => (
-        <mesh
-          key={index}
-          position={[-PITCH_LENGTH / 2 + PITCH_LENGTH / 16 + (index * PITCH_LENGTH) / 8, 0.03, 0]}
-          rotation={[-Math.PI / 2, 0, 0]}
-          material={solid(index % 2 ? TURF : TURF_STRIPE)}
-          receiveShadow
-        >
-          <planeGeometry args={[PITCH_LENGTH / 8, PITCH_WIDTH]} />
-        </mesh>
-      ))}
-      {[-1, 1].map((side) => (
-        <Box key={`z${side}`} position={[0, 0.05, (side * PITCH_WIDTH) / 2]} size={[PITCH_LENGTH, 0.02, LINE]} color={PALETTE.white} shadow={false} />
-      ))}
-      {[-1, 0, 1].map((side) => (
-        <Box key={`x${side}`} position={[(side * PITCH_LENGTH) / 2, 0.05, 0]} size={[LINE, 0.02, PITCH_WIDTH]} color={PALETTE.white} shadow={false} />
-      ))}
-      <mesh position={[0, 0.05, 0]} rotation={[-Math.PI / 2, 0, 0]} material={solid(PALETTE.white)}>
-        <ringGeometry args={[1.7, 1.82, 32]} />
-      </mesh>
-      <Goal side={-1} color="#4f8fe8" />
-      <Goal side={1} color="#f29b38" />
-      <Ball />
-      <RocketCar />
+      <GladeLight />
     </group>
   );
 }

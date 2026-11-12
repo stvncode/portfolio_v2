@@ -8,7 +8,8 @@ import { TimberHouse } from "../kit/timber-house";
 const BAR_GREEN = "#24533f";
 const GOLD = "#e7c76a";
 
-export function Dartboard() {
+/** A dartboard lying flat, face up. `darts` leaves two stuck in it. */
+export function Dartboard({ darts = true }: { darts?: boolean }) {
   const rings = [
     { radius: 0.34, color: "#1d1d1d" },
     { radius: 0.3, color: "#c23b2f" },
@@ -30,8 +31,12 @@ export function Dartboard() {
           segments={20}
         />
       ))}
-      <Box position={[0.08, 0.12, -0.05]} rotation={[0.3, 0, 0.2]} size={[0.02, 0.2, 0.02]} color="#d9d9d9" />
-      <Box position={[-0.1, 0.12, 0.04]} rotation={[0.2, 0, -0.3]} size={[0.02, 0.2, 0.02]} color="#d9d9d9" />
+      {darts && (
+        <>
+          <Box position={[0.08, 0.12, -0.05]} rotation={[0.3, 0, 0.2]} size={[0.02, 0.2, 0.02]} color="#d9d9d9" />
+          <Box position={[-0.1, 0.12, 0.04]} rotation={[0.2, 0, -0.3]} size={[0.02, 0.2, 0.02]} color="#d9d9d9" />
+        </>
+      )}
     </group>
   );
 }

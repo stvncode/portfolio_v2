@@ -4,6 +4,7 @@ import { litBulb, PALETTE } from "../kit/materials";
 import { Block, Box, Cylinder } from "../kit/shapes";
 import { Sign } from "../kit/sign";
 import { Dartboard } from "../places/rennes";
+import { ThrownDarts, useDarts } from "./darts";
 import { Pendant } from "./furniture";
 import { InteriorSpot } from "./interior-spot";
 import { BAR_LAYOUT as LAYOUT } from "./layouts";
@@ -112,6 +113,7 @@ function BarTable() {
 /** Inside Le Petit Bar: the counter, the bottles, and the dartboard. */
 export function BarInterior({ nearbyId }: { nearbyId: string | null }) {
   const spot = { placeId: PLACE, nearbyId };
+  const game = useDarts("darts");
   return (
     <group>
       <Room
@@ -145,10 +147,19 @@ export function BarInterior({ nearbyId }: { nearbyId: string | null }) {
           <Stool key={x} x={x} />
         ))}
       </group>
-      <InteriorSpot {...spot} spotId="darts" position={[-LAYOUT.halfWidth + 0.06, 1.75, 0.4]} bubbleHeight={1.3}>
+      <InteriorSpot
+        {...spot}
+        spotId="darts"
+        position={[-LAYOUT.halfWidth + 0.06, 1.75, 0.4]}
+        bubbleHeight={1.3}
+        line={game.line}
+        keyHint={game.keyHint}
+        touchHint={game.touchHint}
+      >
         <group rotation={[0, Math.PI / 2, 0]}>
-          <Dartboard />
+          <Dartboard darts={false} />
         </group>
+        <ThrownDarts darts={game.darts} />
         <Box position={[-0.03, 0, 0]} size={[0.04, 0.9, 0.9]} color="#3a2a1e" />
       </InteriorSpot>
       <Box position={[-2.45, 0.015, 0.4]} size={[0.06, 0.02, 1]} color={GOLD} shadow={false} />

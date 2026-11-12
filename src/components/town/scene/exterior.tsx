@@ -1,20 +1,24 @@
 "use client";
 
-import { Cat, PLUME, PONYO } from "../kit/cat";
-import { Figure, MALO, MATHILDE } from "../kit/figure";
 import { Bench, Lamp } from "../kit/lamp";
+import { LightPool } from "../kit/light-pool";
 import { OpenAirCinema } from "../places/cinema";
-import { BroceliandeGlade, Pitch, Signpost, Well } from "../places/countryside";
+import { BroceliandeGlade, Signpost, Well } from "../places/countryside";
 import { Longere } from "../places/longere";
 import { DeviceLibrary, EsphomeWorkshop, HomeAssistantHall, RecordShop } from "../places/ohf";
+import { RobotMower } from "../places/ohf-extras";
 import { MovingBoxes, MovingVan, Penty, VegetableGarden } from "../places/penty";
+import { Pitch } from "../places/pitch";
 import { Kiosk, MarketStall, Neighbour, PetitBar } from "../places/rennes";
-import { useTown } from "../town-context";
 import { findTownPlace } from "@/data/town";
-import { Spot } from "./spot";
+import { useTown } from "../town-context";
+import { PLACE_ICONS } from "../ui/place-style";
+import { Atmosphere } from "./atmosphere";
+import { Friends } from "./friends";
 import { Ground } from "./ground";
 import { GardenFence, Mailbox, VillageLife } from "./life";
 import { Nature } from "./nature";
+import { Spot } from "./spot";
 
 interface ExteriorProps {
   nearbyId: string | null;
@@ -27,6 +31,18 @@ const SIGNPOST_ARROWS = [
   { label: "Val d'Izé", angle: -Math.PI * 0.4 },
   { label: "Cinéma", angle: -Math.PI * 0.05 },
   { label: "OHF", angle: Math.PI * 0.45 },
+];
+
+const NIGHT_POOLS: { x: number; z: number; radius: number; color?: string }[] = [
+  { x: -22, z: -4.4, radius: 3 },
+  { x: -27.6, z: -5, radius: 2.2 },
+  { x: -16.4, z: -5, radius: 2.2 },
+  { x: -14, z: 1.2, radius: 1.8 },
+  { x: -10, z: -15.8, radius: 2.6 },
+  { x: -1, z: -15.2, radius: 3.6, color: "#bfe9ff" },
+  { x: 8, z: -15.4, radius: 2.6, color: "#9fd8ff" },
+  { x: 15, z: -15, radius: 2.4 },
+  { x: 7.8, z: 18.6, radius: 2.2, color: "#9aa2ff" },
 ];
 
 /** The village: every place, the people, the paths and the fields. */
@@ -44,6 +60,7 @@ export function Exterior({ nearbyId, openId, visited }: ExteriorProps) {
       nearby: nearbyId === id,
       quiet: openId !== null,
       marker: visited.has(id) ? ("visited" as const) : ("new" as const),
+      icon: PLACE_ICONS[id],
     };
   }
 
@@ -51,6 +68,7 @@ export function Exterior({ nearbyId, openId, visited }: ExteriorProps) {
     <>
       <Ground onWalkTo={town.walkTo} />
       <Nature />
+      <Atmosphere />
 
       {/* Home, Val d'Izé */}
       <Spot {...place("longere")} position={[-6, 0, 15]} bubbleHeight={7.8}>
@@ -59,9 +77,7 @@ export function Exterior({ nearbyId, openId, visited }: ExteriorProps) {
       <Spot {...place("penty")} position={[7, 0, 15.4]} bubbleHeight={5.2}>
         <Penty />
       </Spot>
-      <Spot {...place("pitch")} position={[-4, 0, 31.5]} bubbleHeight={3.2}>
-        <Pitch />
-      </Spot>
+      <Pitch spot={place("pitch")} />
       <group position={[1.2, 0, 19.2]}>
         <MovingVan />
       </group>
@@ -76,10 +92,7 @@ export function Exterior({ nearbyId, openId, visited }: ExteriorProps) {
         <Mailbox />
       </group>
       <VillageLife />
-      <Figure look={MATHILDE} position={[-9.4, 0, 19.4]} rotation={[0, 0.5, 0]} />
-      <Figure look={MALO} position={[-8.5, 0, 19.9]} rotation={[0, 0.2, 0]} scale={0.6} />
-      <Cat look={PONYO} position={[-5.2, 0, 18.7]} rotation={[0, 0.6, 0]} scale={2.1} sitting />
-      <Cat look={PLUME} position={[-15, 1.42, 12.4]} rotation={[0, Math.PI / 2, 0]} scale={1.7} />
+      <Friends nearbyId={nearbyId} quiet={openId !== null} />
 
       {/* Rennes, Place des Lices */}
       <Spot {...place("petit-bar")} position={[-22, 0, -7.5]} bubbleHeight={10.2}>
@@ -118,6 +131,12 @@ export function Exterior({ nearbyId, openId, visited }: ExteriorProps) {
       </Spot>
       <Lamp position={[-5.4, 0, -12.2]} lit />
       <Lamp position={[11.8, 0, -12.2]} lit />
+      <RobotMower />
+
+      {/* Light from doors and shop windows, once night falls. */}
+      {NIGHT_POOLS.map((pool) => (
+        <LightPool key={`${pool.x}:${pool.z}`} position={[pool.x, 0, pool.z]} radius={pool.radius} color={pool.color} strength={0.48} />
+      ))}
 
       {/* Countryside */}
       <Spot {...place("cinema")} position={[21, 0, -1.6]} bubbleHeight={7.4}>

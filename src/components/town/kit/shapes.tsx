@@ -112,6 +112,8 @@ interface PitchedRoofProps {
   roofColor: string;
   overhang?: number;
   thickness?: number;
+  /** Rows of slates drawn across each slope. */
+  courses?: number;
 }
 
 /** Gable walls plus two roof slopes, with the ridge along x. */
@@ -124,8 +126,10 @@ export function PitchedRoof({
   roofColor,
   overhang = 0.35,
   thickness = 0.18,
+  courses = 0,
 }: PitchedRoofProps) {
   const gable = useGableGeometry(span, height, length);
+  const courseColor = useMemo(() => new THREE.Color(roofColor).offsetHSL(0, 0, -0.05).getStyle(), [roofColor]);
   const half = span / 2;
   const rafter = Math.hypot(half, height);
   const slope = rafter + overhang;
@@ -140,16 +144,21 @@ export function PitchedRoof({
     <group position={position}>
       <mesh geometry={gable} material={solid(wallColor)} castShadow receiveShadow />
       {[1, -1].map((side) => (
-        <mesh
-          key={side}
-          position={[0, centreY, side * centreZ]}
-          rotation={[side * angle, 0, 0]}
-          material={solid(roofColor)}
-          castShadow
-          receiveShadow
-        >
-          <boxGeometry args={[panelLength, thickness, slope]} />
-        </mesh>
+        <group key={side} position={[0, centreY, side * centreZ]} rotation={[side * angle, 0, 0]}>
+          <mesh material={solid(roofColor)} castShadow receiveShadow>
+            <boxGeometry args={[panelLength, thickness, slope]} />
+          </mesh>
+          {Array.from({ length: courses }, (_, index) => (
+            <mesh
+              key={index}
+              position={[0, thickness / 2 + 0.012, -slope / 2 + ((index + 1) * slope) / (courses + 1)]}
+              material={solid(courseColor)}
+              receiveShadow
+            >
+              <boxGeometry args={[panelLength, 0.024, 0.06]} />
+            </mesh>
+          ))}
+        </group>
       ))}
       <Box
         position={[0, height + thickness * 0.55, 0]}

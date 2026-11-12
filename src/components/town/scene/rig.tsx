@@ -23,13 +23,23 @@ const SHEET_SHARE = 0.62;
 const SCREEN_RIGHT = new THREE.Vector3(1, 0, -1).normalize();
 const SCREEN_DOWN = new THREE.Vector3(1, 0, 1).normalize();
 
-/** Orthographic follow camera with wheel zoom. */
+/** While the welcome card is up, the camera sits this far out and drifts. */
+const INTRO_ZOOM = 0.5;
+const INTRO_CENTRE = new THREE.Vector3(-2, 0, 6);
+const INTRO_DRIFT = 5;
+const INTRO_DRIFT_SPEED = 0.12;
+/** How fast the camera settles on you once you start exploring. */
+const INTRO_EASE = 1.4;
+
+/** Orthographic follow camera with wheel zoom and a slow fly-over for the intro. */
 export function CameraRig() {
   const town = useTown();
   const { camera, size, gl } = useThree();
   const focus = useRef(new THREE.Vector3(town.player.current.x, 0, town.player.current.z));
   const zoom = useRef(1);
   const areaId = useRef(town.area.id);
+  const introLevel = useRef(town.intro ? 1 : 0);
+  const started = useRef(false);
 
   useEffect(() => {
     const element = gl.domElement;
@@ -42,9 +52,15 @@ export function CameraRig() {
     return () => element.removeEventListener("wheel", handleWheel);
   }, [gl]);
 
-  useFrame((_, delta) => {
+  useFrame(({ clock }, rawDelta) => {
+    const delta = Math.min(rawDelta, 0.1);
     const player = town.player.current;
     const ortho = camera as THREE.OrthographicCamera;
+
+    const introGoal = town.intro ? 1 : 0;
+    introLevel.current += (introGoal - introLevel.current) * (1 - Math.exp(-INTRO_EASE * delta));
+    const intro = introLevel.current < 0.002 ? 0 : introLevel.current;
+
     const look = new THREE.Vector3(player.x, 0, player.z);
     // With a panel open, look past it so you stay in the part of the screen still visible.
     if (town.panelOpen && size.width >= SIDE_PANEL_MIN_WIDTH) {
@@ -52,18 +68,32 @@ export function CameraRig() {
     } else if (town.panelOpen) {
       look.addScaledVector(SCREEN_DOWN, (size.height * SHEET_SHARE) / 2 / ortho.zoom);
     }
-    if (areaId.current !== town.area.id) {
-      // Walked through a door: cut, don't pan across the map.
+    if (intro > 0) {
+      const angle = clock.elapsedTime * INTRO_DRIFT_SPEED;
+      const drift = new THREE.Vector3(
+        INTRO_CENTRE.x + Math.cos(angle) * INTRO_DRIFT,
+        0,
+        INTRO_CENTRE.z + Math.sin(angle) * INTRO_DRIFT,
+      );
+      look.lerp(drift, intro);
+    }
+
+    const visible = town.area.visibleHeight;
+    const base = Math.min(size.height / visible, size.width / (visible * MIN_WIDTH_SHARE));
+    const wantedZoom = base * THREE.MathUtils.lerp(zoom.current, INTRO_ZOOM, intro);
+
+    if (!started.current || areaId.current !== town.area.id) {
+      // First frame, or walked through a door: cut, don't pan across the map.
+      started.current = true;
       areaId.current = town.area.id;
       focus.current.copy(look);
+      ortho.zoom = wantedZoom;
+      ortho.updateProjectionMatrix();
     } else {
-      focus.current.lerp(look, 1 - Math.exp(-FOLLOW * Math.min(delta, 0.1)));
+      focus.current.lerp(look, 1 - Math.exp(-FOLLOW * delta));
     }
     camera.position.copy(focus.current).add(CAMERA_OFFSET);
     camera.lookAt(focus.current);
-    const visible = town.area.visibleHeight;
-    const base = Math.min(size.height / visible, size.width / (visible * MIN_WIDTH_SHARE));
-    const wantedZoom = base * zoom.current;
     if (Math.abs(ortho.zoom - wantedZoom) > 0.01) {
       ortho.zoom += (wantedZoom - ortho.zoom) * Math.min(1, delta * 8);
       ortho.updateProjectionMatrix();
@@ -75,24 +105,25 @@ export function CameraRig() {
 
 const DAY = {
   sky: new THREE.Color("#cfe6ef"),
-  sun: new THREE.Color("#fff1d9"),
-  sunIntensity: 2.4,
-  hemiSky: new THREE.Color("#e8f3ff"),
-  hemiGround: new THREE.Color("#8a9a6a"),
-  hemiIntensity: 1.25,
+  sun: new THREE.Color("#ffe8c2"),
+  sunIntensity: 2.75,
+  hemiSky: new THREE.Color("#dcebff"),
+  hemiGround: new THREE.Color("#a9b27e"),
+  hemiIntensity: 1.05,
 };
 
 const NIGHT = {
-  sky: new THREE.Color("#1a2340"),
-  sun: new THREE.Color("#8ea6ff"),
-  sunIntensity: 0.45,
-  hemiSky: new THREE.Color("#3a4a7a"),
-  hemiGround: new THREE.Color("#1e2433"),
-  hemiIntensity: 0.55,
+  sky: new THREE.Color("#172039"),
+  sun: new THREE.Color("#9db4ff"),
+  sunIntensity: 0.7,
+  hemiSky: new THREE.Color("#44568c"),
+  hemiGround: new THREE.Color("#1f2638"),
+  hemiIntensity: 0.72,
 };
 
-const SUN_OFFSET = new THREE.Vector3(-14, 30, 18);
-const SHADOW_EXTENT = 34;
+/** A mid-afternoon sun: low enough for long shadows that give the village depth. */
+const SUN_OFFSET = new THREE.Vector3(-24, 27, 10);
+const SHADOW_EXTENT = 38;
 const NIGHT_FADE = 1.2;
 const FOG_NEAR = 70;
 const FOG_FAR = 150;
@@ -159,7 +190,7 @@ export function Lighting() {
         shadow-camera-top={SHADOW_EXTENT}
         shadow-camera-bottom={-SHADOW_EXTENT}
         shadow-camera-near={1}
-        shadow-camera-far={90}
+        shadow-camera-far={110}
       />
     </>
   );

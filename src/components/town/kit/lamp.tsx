@@ -4,6 +4,7 @@ import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
 import { useTown } from "../town-context";
+import { LightPool } from "./light-pool";
 import { glow } from "./materials";
 import { Block, Box, Cylinder, type Vec3 } from "./shapes";
 
@@ -44,6 +45,7 @@ export function Lamp({ position, lit = false }: LampProps) {
         <sphereGeometry args={[0.6, 12, 8]} />
         <meshBasicMaterial ref={halo} color="#ffcf7a" transparent opacity={0} depthWrite={false} blending={THREE.AdditiveBlending} />
       </mesh>
+      <LightPool position={[0, 0, 0]} radius={lit ? 4.4 : 3.4} strength={lit ? 0.5 : 0.62} />
       {lit && <pointLight ref={light} position={[0, 3.1, 0]} intensity={0} distance={LIGHT_DISTANCE} decay={1.6} color="#ffc778" />}
     </group>
   );

@@ -3,7 +3,9 @@
 import { BarInterior } from "../interiors/bar-interior";
 import { HouseInterior } from "../interiors/house-interior";
 import { PentyInterior } from "../interiors/penty-interior";
+import { Batched } from "../kit/batched";
 import { InteriorLighting } from "../interiors/room";
+import { ClickMarker } from "./click-marker";
 import { Exterior } from "./exterior";
 import { Player } from "./player";
 import { CameraRig, Lighting } from "./rig";
@@ -28,15 +30,20 @@ export function Scene({ inside, nearbyId, openId, visited }: SceneProps) {
     <>
       <CameraRig />
       <Player />
+      <ClickMarker />
       {Interior ? (
         <>
           <InteriorLighting />
-          <Interior nearbyId={nearbyId} />
+          <Batched key={inside}>
+            <Interior nearbyId={nearbyId} />
+          </Batched>
         </>
       ) : (
         <>
           <Lighting />
-          <Exterior nearbyId={nearbyId} openId={openId} visited={visited} />
+          <Batched>
+            <Exterior nearbyId={nearbyId} openId={openId} visited={visited} />
+          </Batched>
         </>
       )}
     </>

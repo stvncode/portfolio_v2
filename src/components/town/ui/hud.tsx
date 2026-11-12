@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, Check, DoorOpen, Map as MapIcon, MapPin, Moon, Sun } from "lucide-react";
+import { ArrowLeft, Check, DoorOpen, Map as MapIcon, MapPin, Moon, RotateCcw, Sun } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { TOWN_PLACES } from "@/data/town";
@@ -15,13 +15,15 @@ interface HudProps {
   onLeave: () => void;
   onToggleNight: () => void;
   onGoTo: (id: string) => void;
+  /** Forget which places were found and start over. */
+  onReset: () => void;
 }
 
 const BUTTON =
   "inline-flex h-10 items-center gap-2 rounded-full bg-[#fffdf8]/95 px-3 text-sm font-medium text-neutral-800 shadow-[0_4px_14px_rgba(30,25,15,0.14)] ring-1 ring-black/5 backdrop-blur transition hover:bg-white";
 
 /** Corner controls: back to the classic site, progress, places list, day and night. */
-export function Hud({ visited, night, showHint, insideName, onLeave, onToggleNight, onGoTo }: HudProps) {
+export function Hud({ visited, night, showHint, insideName, onLeave, onToggleNight, onGoTo, onReset }: HudProps) {
   const [listOpen, setListOpen] = useState(false);
   const total = TOWN_PLACES.length;
   const progress = Math.round((visited.size / total) * 100);
@@ -79,6 +81,21 @@ export function Hud({ visited, night, showHint, insideName, onLeave, onToggleNig
                   </li>
                 );
               })}
+              {visited.size > 0 && (
+                <li className="mt-1 border-t border-black/5 pt-1">
+                  <button
+                    type="button"
+                    className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-xs text-neutral-500 hover:bg-black/5"
+                    onClick={() => {
+                      setListOpen(false);
+                      onReset();
+                    }}
+                  >
+                    <RotateCcw className="size-3.5" aria-hidden />
+                    Start over
+                  </button>
+                </li>
+              )}
             </ul>
           )}
         </div>

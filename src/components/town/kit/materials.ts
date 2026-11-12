@@ -28,22 +28,28 @@ export const PALETTE = {
   skin: "#e9b996",
 } as const;
 
+const SOLID_LOOK = { flatShading: true, roughness: 0.92, metalness: 0 } as const;
 const cache = new Map<string, THREE.MeshStandardMaterial>();
+const solids = new WeakSet<THREE.Material>();
 
 /** A flat-shaded matte material, shared per colour. */
 export function solid(color: string): THREE.MeshStandardMaterial {
   let material = cache.get(color);
   if (!material) {
-    material = new THREE.MeshStandardMaterial({
-      color,
-      flatShading: true,
-      roughness: 0.92,
-      metalness: 0,
-    });
+    material = new THREE.MeshStandardMaterial({ color, ...SOLID_LOOK });
     cache.set(color, material);
+    solids.add(material);
   }
   return material;
 }
+
+/** True for materials made by `solid`: they differ only in colour. */
+export function isSolid(material: THREE.Material): material is THREE.MeshStandardMaterial {
+  return solids.has(material);
+}
+
+/** What batches of solid-coloured meshes are drawn with: the colour rides on each vertex. */
+export const vertexSolid = new THREE.MeshStandardMaterial({ vertexColors: true, ...SOLID_LOOK });
 
 const WINDOW_DAY = new THREE.Color("#a9c3d3");
 const WINDOW_NIGHT = new THREE.Color("#3a3326");

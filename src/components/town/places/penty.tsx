@@ -3,31 +3,42 @@
 import { PALETTE } from "../kit/materials";
 import { Block, Box, Door, PitchedRoof } from "../kit/shapes";
 import { Sign } from "../kit/sign";
+import { type Opening, Stonework } from "../kit/stonework";
 
 const WIDTH = 5;
 const DEPTH = 4.4;
 const WALL = 2.4;
 const FRONT = DEPTH / 2;
+const FRONT_WALL: [number, number, number] = [0, 0, FRONT];
+const SIDE_WALL: [number, number, number] = [WIDTH / 2, 0, 0];
+/** Room for the door, the big window and its sign. */
+const FRONT_OPENINGS: Opening[] = [
+  { x: -1.2, y: 1, w: 1.3, h: 2.1 },
+  { x: 0.9, y: 1.55, w: 2.1, h: 1.7 },
+];
 
 /** The small stone outbuilding that became the gaming room. Front faces +z. */
 export function Penty() {
   return (
     <group>
-      <Block size={[WIDTH, WALL, DEPTH]} color={PALETTE.granite} />
+      <Block size={[WIDTH, WALL, DEPTH]} color="#cbc4b7" />
       <PitchedRoof
         position={[0, WALL, 0]}
         length={WIDTH}
         span={DEPTH}
         height={2.1}
-        wallColor={PALETTE.granite}
+        wallColor="#cbc4b7"
         roofColor={PALETTE.slate}
         overhang={0.25}
+        courses={6}
       />
       <Block position={[WIDTH / 2 - 0.5, WALL + 1.2, 0]} size={[0.7, 1.4, 0.8]} color={PALETTE.granite} />
-      <Door position={[-1.2, 0, FRONT + 0.02]} color={PALETTE.bretonBlue} />
+      <Stonework position={FRONT_WALL} width={WIDTH} height={WALL} openings={FRONT_OPENINGS} seed={31} />
+      <Stonework position={SIDE_WALL} width={DEPTH} height={WALL} gable={2.1} facing="side" seed={32} />
+      <Door position={[-1.2, 0, FRONT + 0.05]} color={PALETTE.bretonBlue} />
 
       {/* Gaming window: a monitor glow you can see from outside. */}
-      <group position={[0.9, 1.35, FRONT + 0.02]}>
+      <group position={[0.9, 1.35, FRONT + 0.05]}>
         <Box size={[1.9, 1.15, 0.08]} color={PALETTE.frame} shadow={false} />
         <mesh position={[0, 0, 0.05]}>
           <boxGeometry args={[1.7, 0.95, 0.04]} />
@@ -40,7 +51,7 @@ export function Penty() {
       </group>
       <Sign
         text="GAMING ROOM"
-        position={[0.9, 2.15, FRONT + 0.06]}
+        position={[0.9, 2.15, FRONT + 0.09]}
         width={1.6}
         background="#1b1e2e"
         color="#9fb2ff"

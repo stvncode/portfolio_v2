@@ -1,13 +1,15 @@
 import { TOWN_PLACES } from "@/data/town";
 import type { Bounds, Rect } from "@/lib/town/movement";
 import { INTERIOR_LAYOUTS } from "./interiors/layouts";
-import { OBSTACLES, SPAWN, WALK_BOUNDS } from "./world-layout";
+import { FRIEND_RADIUS, FRIEND_SPOTS, OBSTACLES, SPAWN, WALK_BOUNDS } from "./world-layout";
 
 /** Somewhere you can walk up to: a place's entrance outside, a hotspot inside. */
 export interface Spot {
   id: string;
   x: number;
   z: number;
+  /** How close counts as standing at it; defaults to the area's `nearDistance`. */
+  radius?: number;
 }
 
 /** A walkable space: the village, or the inside of a building. */
@@ -29,7 +31,10 @@ export const OUTSIDE: Area = {
   id: OUTSIDE_ID,
   bounds: WALK_BOUNDS,
   obstacles: OBSTACLES,
-  spots: TOWN_PLACES.map((place) => ({ id: place.id, x: place.entrance[0], z: place.entrance[1] })),
+  spots: [
+    ...TOWN_PLACES.map((place) => ({ id: place.id, x: place.entrance[0], z: place.entrance[1] })),
+    ...Object.entries(FRIEND_SPOTS).map(([id, spot]) => ({ id, x: spot.stand[0], z: spot.stand[1], radius: FRIEND_RADIUS })),
+  ],
   spawn: SPAWN,
   visibleHeight: 22,
   nearDistance: 2.6,

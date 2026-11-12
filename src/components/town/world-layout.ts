@@ -25,6 +25,28 @@ export const SPAWN: [number, number] = [2, 7];
 
 export const PLAYER_RADIUS = 0.4;
 
+/** Where the family is, and where you stand to say hello. */
+export interface FriendSpot {
+  /** Where they are: x, y, z. */
+  at: [number, number, number];
+  rotationY: number;
+  /** Where the player stands: x, z. */
+  stand: [number, number];
+}
+
+export const FRIEND_SPOTS: Record<string, FriendSpot> = {
+  mathilde: { at: [-10.4, 0, 19.5], rotationY: 0.6, stand: [-9.6, 20.5] },
+  malo: { at: [-12.2, 0, 20.1], rotationY: 0.9, stand: [-11.3, 21.1] },
+  ponyo: { at: [-8.1, 0.52, 18.35], rotationY: 0.5, stand: [-8.1, 19.5] },
+  plume: { at: [-1.75, 1.05, 20.45], rotationY: -0.4, stand: [-1.8, 21.9] },
+};
+
+/** How close you need to be to a friend for their bubble to show. */
+export const FRIEND_RADIUS = 1.4;
+
+/** Centre of the car-football pitch. */
+export const PITCH_ORIGIN: [number, number] = [-4, 31.5];
+
 /** The player can't leave this rectangle. */
 export const WALK_BOUNDS = { minX: -31, maxX: 30, minZ: -24, maxZ: 37 };
 
@@ -39,6 +61,44 @@ export const PATHS: Rect[] = [
 ];
 
 export const PLAZA: Rect = { x: -20, z: -5, w: 18, d: 10 };
+
+/** The gravel courtyard in front of the farmhouse. */
+export const COURTYARD: Rect = { x: -6.4, z: 19.15, w: 15.6, d: 2.5 };
+
+export interface BushSpot {
+  x: number;
+  z: number;
+  scale: number;
+  /** Colour of its blossom, for the ones in flower. */
+  bloom?: string;
+}
+
+export const BUSHES: BushSpot[] = [
+  // Around the penty and the lane home.
+  { x: 4.3, z: 18.1, scale: 0.8, bloom: "#f08bb4" },
+  { x: 10, z: 17.9, scale: 0.9 },
+  { x: 10.4, z: 14.2, scale: 1 },
+  { x: -14.4, z: 18.6, scale: 0.9, bloom: "#ffffff" },
+  // The Open Home Foundation row.
+  { x: -13.7, z: -16.6, scale: 0.9 },
+  { x: -6.4, z: -16.2, scale: 0.8, bloom: "#f6d55c" },
+  { x: 4.3, z: -16, scale: 0.8 },
+  { x: 11.7, z: -15.9, scale: 0.9, bloom: "#8fb8f0" },
+  { x: 18.8, z: -15.6, scale: 1 },
+  // The village green.
+  { x: -1.7, z: 2.4, scale: 0.7, bloom: "#e85d4f" },
+  { x: 1.8, z: 2.3, scale: 0.6 },
+  { x: -4.6, z: 8.2, scale: 0.8 },
+  { x: 5.4, z: 9.6, scale: 0.7, bloom: "#b48be0" },
+  { x: 11.4, z: -3.4, scale: 0.9 },
+  { x: 3.8, z: -7.4, scale: 0.8, bloom: "#ffffff" },
+  // The cinema and the square.
+  { x: 15.4, z: -2.2, scale: 1 },
+  { x: 26.8, z: -1.9, scale: 1.1, bloom: "#f08bb4" },
+  { x: -29.8, z: -0.6, scale: 0.9 },
+  { x: -10.4, z: -9.6, scale: 1, bloom: "#f6d55c" },
+  { x: -9.8, z: 2.6, scale: 0.8 },
+];
 
 export const FIELDS: ColoredRect[] = [
   { x: -46, z: -10, w: 26, d: 40, color: PALETTE.field },
@@ -113,6 +173,7 @@ export const OBSTACLES: Rect[] = [
   { x: -6, z: 15, w: 14.4, d: 5.8 },
   { x: 7, z: 15.4, w: 5.2, d: 4.6 },
   { x: 1.2, z: 19.2, w: 2.2, d: 4.4 },
+  { x: -1.7, z: 20.5, w: 2.4, d: 1.3 },
   // Rennes: Le Petit Bar, its neighbours and the kiosk.
   { x: -22, z: -7.5, w: 6.2, d: 4.6 },
   { x: -27.6, z: -7.8, w: 5, d: 4.2 },

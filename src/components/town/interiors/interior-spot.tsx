@@ -10,11 +10,25 @@ interface InteriorSpotProps {
   nearbyId: string | null;
   position: [number, number, number];
   bubbleHeight: number;
+  /** Replaces the spot's usual line, for spots that talk back. */
+  line?: string;
+  keyHint?: string;
+  touchHint?: string;
   children?: ReactNode;
 }
 
 /** A hotspot inside a building, with its text from the interiors data. */
-export function InteriorSpot({ placeId, spotId, nearbyId, position, bubbleHeight, children }: InteriorSpotProps) {
+export function InteriorSpot({
+  placeId,
+  spotId,
+  nearbyId,
+  position,
+  bubbleHeight,
+  line,
+  keyHint,
+  touchHint,
+  children,
+}: InteriorSpotProps) {
   const spot = findInteriorSpot(placeId, spotId);
   if (!spot) return <group position={position}>{children}</group>;
   const isExit = spot.id === EXIT_SPOT;
@@ -24,9 +38,9 @@ export function InteriorSpot({ placeId, spotId, nearbyId, position, bubbleHeight
       position={position}
       bubbleHeight={bubbleHeight}
       title={spot.name}
-      line={spot.line}
-      keyHint={isExit ? "Press Enter or click to go out" : undefined}
-      touchHint={isExit ? "Tap to go out" : undefined}
+      line={line ?? spot.line}
+      keyHint={keyHint ?? (isExit ? "Press Enter or click to go out" : undefined)}
+      touchHint={touchHint ?? (isExit ? "Tap to go out" : undefined)}
       nearby={nearbyId === spot.id}
       quiet={false}
       marker="none"

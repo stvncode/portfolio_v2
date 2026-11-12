@@ -4,6 +4,7 @@ import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
 import { seededRandom } from "@/lib/town/scatter";
+import { DYNAMIC } from "../kit/batched";
 import { Figure, type FigureLook } from "../kit/figure";
 import { PALETTE, solid } from "../kit/materials";
 import { Block, Box, Cylinder, type Vec3 } from "../kit/shapes";
@@ -21,7 +22,7 @@ function Cow({ position, rotationY, phase }: { position: Vec3; rotationY: number
     head.current.rotation.x = 0.2 + graze * 0.6;
   });
   return (
-    <group position={position} rotation={[0, rotationY, 0]}>
+    <group position={position} rotation={[0, rotationY, 0]} userData={DYNAMIC}>
       <Block position={[0, 0.7, 0]} size={[0.9, 0.75, 1.7]} color={COW_WHITE} />
       <Box position={[0.46, 1.1, 0.2]} size={[0.02, 0.4, 0.6]} color={COW_BLACK} shadow={false} />
       <Box position={[-0.46, 0.95, -0.3]} size={[0.02, 0.45, 0.7]} color={COW_BLACK} shadow={false} />
@@ -66,7 +67,7 @@ function Duck({ phase, speed }: { phase: number; speed: number }) {
     duck.current.rotation.y = -t;
   });
   return (
-    <group ref={duck}>
+    <group ref={duck} userData={DYNAMIC}>
       <Block size={[0.28, 0.2, 0.42]} color="#f7f4ec" />
       <Block position={[0, 0.18, 0.16]} size={[0.18, 0.2, 0.18]} color="#3d7a4a" />
       <Box position={[0, 0.26, 0.29]} size={[0.1, 0.05, 0.12]} color="#f29b38" />
@@ -91,8 +92,8 @@ export function Pond() {
       <mesh position={[0, 0.035, 0]} rotation={[-Math.PI / 2, 0, 0]} scale={[1, 0.78, 1]} material={solid("#94c8e0")}>
         <ringGeometry args={[1.6, 1.75, 24]} />
       </mesh>
-      {stones.map((stone) => (
-        <mesh key={`${stone.x}`} position={[stone.x, 0.08, stone.z]} scale={[stone.size, stone.size * 0.7, stone.size]} material={solid(PALETTE.graniteDark)} castShadow>
+      {stones.map((stone, index) => (
+        <mesh key={index} position={[stone.x, 0.08, stone.z]} scale={[stone.size, stone.size * 0.7, stone.size]} material={solid(PALETTE.graniteDark)} castShadow>
           <dodecahedronGeometry args={[1, 0]} />
         </mesh>
       ))}
@@ -198,7 +199,7 @@ export function VillageLife() {
       <group position={[7.5, 0, -5.5]}>
         <Pond />
       </group>
-      <ChimneySmoke position={[-12.55, 7.6, 15]} />
+      <ChimneySmoke position={[-12.55, 8.05, 15.25]} />
       <Butterfly centre={[-9, 1.2, 9]} phase={0} color={WING_COLORS[0]} />
       <Butterfly centre={[12, 1, 4]} phase={2} color={WING_COLORS[1]} />
       <Butterfly centre={[-17, 1.1, 18]} phase={4} color={WING_COLORS[2]} />
